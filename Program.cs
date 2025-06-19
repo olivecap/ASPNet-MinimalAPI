@@ -1,4 +1,5 @@
 ﻿// Cretae web application
+using Microsoft.AspNetCore.Mvc;
 using MinimalAPI;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.ExceptionServices;
@@ -48,8 +49,31 @@ App.MapGet("/articles/{id}", (int id) =>
     return Results.Ok(article);
 });
 
+//---------------------------------------------------------------------------------------
+//  Code example commenté pour exemple
+// ---------------------------------------------------------------------------------------
+
+// Root avec nom different => On utilise [FromRoute] tag
+// FromQuery permet de specifier le tag danss la query
+//  https://Localhost:port/Personne/MonNom?prenom=monprenom
+/*
+App.MapGet("/personne/{nom}", (
+    [FromRoute(Name = "nom")] string nomPersonne,
+    [FromQuery(Name = "prenom")] string? prenomPersonne) => Results.Ok($"{nomPersonne} {prenomPersonne}"));
+*/
+
+// Recommendation ajouter pour des question de perf
+App.MapGet("/personne/{nom}", (
+    [FromRoute] string nom,
+    [FromQuery] string? prenom,
+    [FromHeader(Name="Accept-encoding")] string encoding) => Results.Ok($"{nom} {prenom} {encoding}"));
+
+
 // Run Aplliction
+// All API must be added before the call of the run
 App.Run();
+
+
 
 
 
